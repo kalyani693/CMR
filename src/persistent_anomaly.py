@@ -1,6 +1,6 @@
 import numpy as np
 
-def compute_persistent_segments(anomaly_flags, K):
+def compute_persistent(anomaly_flags, K):
     persistent = np.zeros_like(anomaly_flags, dtype=bool)
 
     start = None
@@ -17,3 +17,4 @@ def compute_persistent_segments(anomaly_flags, K):
         persistent[start:] = True
 
     return persistent
+
