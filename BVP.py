@@ -6,7 +6,7 @@ from src.feature import extract_features
 from src.windowing import sliding_window
 from src.model import train_model
 import numpy as np
-from src.persistent_anomaly import compute_persistent_segments
+from src.persistent_anomaly import compute_persistent
 import joblib
 
 #-------Unsupervised physiological anomaly detection using wearable BVP signal----------
@@ -80,9 +80,10 @@ aaplyala atleast 10 sec sathi persistent check karaych ahe , 1w->5sec in our cas
 k=6# no of win*win_time/stride_time
 persistent_flags = compute_persistent_segments(anomaly_flags, k)
 
-segments = []
-in_segment = False
-for i, flag in enumerate(persistent_flags):
+def persistent_segments(persistent_flags):
+ segments = []
+ in_segment = False
+ for i, flag in enumerate(persistent_flags):
     if flag and not in_segment:
         start = i
         in_segment = True
@@ -90,9 +91,11 @@ for i, flag in enumerate(persistent_flags):
         segments.append((start, i))
         in_segment = False
 
-if in_segment:
+ if in_segment:
     segments.append((start, len(persistent_flags)))
-
+ return segments
+ segments = persistent_segments(persistent_flags)  
+   
 
 y_pred=model.predict(feature)#binary o/p(-1,0,1)
 
@@ -110,7 +113,7 @@ def score_distribution(win_labels):
  plt.legend()
  return plt.show()
 
-def timeline_anomaly_score():
+def timeline_anomaly_score(Total_scores,threshold,segments):
 #timeline anomaly score
    plt.plot(Total_scores,label="Score")
    plt.axhline(threshold,color="r",label="Threshold",linestyle="--")# threshold chosen based on baseline score distribution (5th percentile)
@@ -123,6 +126,7 @@ def timeline_anomaly_score():
    return plt.show()
 
 #model flags temporal deviations in physiological signal as anomalies.
+
 
 
 
