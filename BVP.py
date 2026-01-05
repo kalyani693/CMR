@@ -78,7 +78,7 @@ take stride=320(50% overlap)
 
 aaplyala atleast 10 sec sathi persistent check karaych ahe , 1w->5sec in our case'''
 k=6# no of win*win_time/stride_time
-persistent_flags = compute_persistent_segments(anomaly_flags, k)
+persistent_flags = compute_persistent(anomaly_flags, k)
 
 def persistent_segments(persistent_flags):
  segments = []
@@ -94,7 +94,7 @@ def persistent_segments(persistent_flags):
  if in_segment:
     segments.append((start, len(persistent_flags)))
  return segments
- segments = persistent_segments(persistent_flags)  
+segments = persistent_segments(persistent_flags)  
    
 
 y_pred=model.predict(feature)#binary o/p(-1,0,1)
@@ -126,6 +126,7 @@ def timeline_anomaly_score(Total_scores,threshold,segments):
    return plt.show()
 
 #model flags temporal deviations in physiological signal as anomalies.
+
 
 
 
