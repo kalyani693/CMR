@@ -80,13 +80,11 @@ def test_model(bvp,temp):
   persistent_anomaly_data=persist_data(segments)
   return clean_fussion_result,persistent_anomaly_data
  
-def save_json(clean_fussion_result):
+def save_json(clean_fussion_result,persistent_data):
   data_to_save={
        "persistent_anomaly":persistent_data,
        "Window_wise_data":clean_fussion_result
       }  
   with open("result1.json","w") as f:
     json.dump(data_to_save,f,indent=2)  
-
-
 
