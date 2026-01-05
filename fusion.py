@@ -19,8 +19,23 @@ def bvp_temp_fuse(norm_slope,temp_stable,Total_scores,anomaly_flags):
                        "temp_stable":bool(int(temp_stable[i])),
                        "final_decision":decision}) 
 
-    return result   
+    return result 
+
+
+def persist_data(segments):
+    result=[]
+    for s in segments:
+        start=s[0]
+        end=s[1]
+        duration=(end-start)*5
+        result.append({
+            "Starting_window":start,
+            "Ending_window":end,
+            "Time-span (Seconds)":duration
+        })
+    return result
 
 
   
   
+
