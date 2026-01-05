@@ -4,7 +4,7 @@ from src.windowing import sliding_window
 import numpy as np
 from src.persistent_anomaly import compute_persistent
 from src.feature_temp import feature_extraction
-from fusion import bvp_temp_fuse
+from fusion import bvp_temp_fuse,persist_data
 import joblib
 from main import clean_fusion_op
 from BVP import timeline_anomaly_score,persistent_segments
@@ -73,15 +73,20 @@ def test_model(bvp,temp):
   clean_fussion_result=clean_fusion_op(fusion_result)
 #print(clean_fussion_result[0])
 
-  persistent_flags=compute_persistent(anomaly_flag,2)
+  persistent_flags=compute_persistent(anomaly_flag,2)#k=2
   segments=persistent_segments(persistent_flags)
-
+ 
   timeline_anomaly_score(total_score,threshold,segments)
-  return clean_fussion_result
-
-  
+  persistent_anomaly_data=persist_data(segments)
+  return clean_fussion_result,persistent_anomaly_data
+ 
 def save_json(clean_fussion_result):
+  data_to_save={
+       "persistent_anomaly":persistent_data,
+       "Window_wise_data":clean_fussion_result
+      }  
   with open("result1.json","w") as f:
-    json.dump(clean_fussion_result,f,indent=2)  
+    json.dump(data_to_save,f,indent=2)  
+
 
 
